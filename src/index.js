@@ -4,6 +4,4 @@ import App from './components/app';
 import 'bootstrap/dist/css/bootstrap.css';
 import './index.css';
 
-import GotService from './sevices/gotService';
-
 ReactDOM.render(<App />, document.getElementById('root'));

@@ -1,4 +1,4 @@
-export default class GotService {
+export default class gotService {
     constructor() {
         this._apiBase = 'https://www.anapioficeandfire.com/api';
     }
@@ -13,27 +13,63 @@ export default class GotService {
         return await res.json();
     }
 
-    getAllCharacters(id) {
-        return this.getResource('/characters?page=5&pageSize=10');
+    async getAllCharacters(id) {
+        const res = await this.getResource('/characters?page=5&pageSize=10');
+        return res.map(this._transformChar);
     }
 
-    getCharacter(id){
-        return this.getResource(`/characters/${id}`);
+    async getCharacter(id){
+        const character = await this.getResource(`/characters/${id}`);
+        return this._transformChar(character);
     }
 
-    getAllHouses() {
-        return this.getResource('/houses/');
+    async getAllHouses() {
+        const res = await this.getResource('/houses/');
+        return res.map(this._transformHouse);
     }
 
-    getHouse(id) {
-        return this.getResource(`/houses/${id}`);
+    async getHouse(id) {
+        const house = await this.getResource(`/houses/${id}`);
+        return this._transformHouse(house);
     }
 
-    getAllBooks() {
-        return this.getResource(`/books/`);
+    async getAllBooks() {
+        const res = await this.getResource(`/books/`);
+        return res.map(this._transformBook);
     }
 
-    getBook(id) {
-        return this.getResource(`/books/${id}`)
+    async getBook(id) {
+        const book = await this.getResource(`/books/${id}`);
+        return this._transformBook(book);
+    }
+
+    _transformChar(char) {
+        return {
+            name: char.name || 'N/A',
+            gender: char.gender || 'N/A',
+            born: char.born || 'N/A',
+            died: char.died || 'N/A',
+            culture: char.culture  || 'N/A'
+        };
+    }
+
+    _transformHouse(house) {
+        return {
+            name: house.name  || 'N/A',
+            region: house.region  || 'N/A',
+            words: house.words  || 'N/A',
+            titles: house.titles  || 'N/A',
+            overlord: house.overlord  || 'N/A',
+            ancentralWeapons: house.ancentralWeapons  || 'N/A'
+        };
+    }
+
+    _transformBook(book) {
+        return {
+            name: book.name  || 'N/A',
+            numberOfPages: book.numberOfPages  || 'N/A',
+            publiser: book.publiser  || 'N/A',
+            released: book.released  || 'N/A'
+        };
     }
 }
