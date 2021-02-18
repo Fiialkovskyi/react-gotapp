@@ -18,7 +18,7 @@ export default class gotService {
         return res.map(this._transformChar);
     }
 
-    async getCharacter(id){
+    async getCharacter(id) {
         const character = await this.getResource(`/characters/${id}`);
         return this._transformChar(character);
     }
@@ -43,33 +43,47 @@ export default class gotService {
         return this._transformBook(book);
     }
 
-    _transformChar(char) {
+    isSet(data) {
+        if (data) {
+            return data
+        } else {
+            return 'no data :('
+        }
+    }
+
+    _extractId = (item) => {
+        const idRegExp = /\/([0-9]*)$/;
+        return item.url.match(idRegExp)[1];
+    }
+
+    _transformChar = char => {
         return {
-            name: char.name || 'N/A',
-            gender: char.gender || 'N/A',
-            born: char.born || 'N/A',
-            died: char.died || 'N/A',
-            culture: char.culture  || 'N/A'
+            name: this.isSet(char.name),
+            gender: this.isSet(char.gender),
+            born: this.isSet(char.born),
+            died: this.isSet(char.died),
+            culture: this.isSet(char.culture),
+            id: this._extractId(char)
         };
     }
 
-    _transformHouse(house) {
+    _transformHouse = house => {
         return {
-            name: house.name  || 'N/A',
-            region: house.region  || 'N/A',
-            words: house.words  || 'N/A',
-            titles: house.titles  || 'N/A',
-            overlord: house.overlord  || 'N/A',
-            ancentralWeapons: house.ancentralWeapons  || 'N/A'
+            name: this.isSet(house.name),
+            region: this.isSet(house.region),
+            words: this.isSet(house.words),
+            titles: this.isSet(house.titles),
+            overlord: this.isSet(house.overlord),
+            ancentralWeapons: this.isSet(house.ancentralWeapons)
         };
     }
 
-    _transformBook(book) {
+    _transformBook = book => {
         return {
-            name: book.name  || 'N/A',
-            numberOfPages: book.numberOfPages  || 'N/A',
-            publiser: book.publiser  || 'N/A',
-            released: book.released  || 'N/A'
+            name: this.isSet(book.name),
+            numberOfPages: this.isSet(book.numberOfPages),
+            publiser: this.isSet(book.publiser),
+            released: this.isSet(book.released)
         };
     }
 }

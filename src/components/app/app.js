@@ -2,13 +2,18 @@ import React, {Component} from 'react';
 import {Col, Row, Container} from 'reactstrap';
 import Header from '../header';
 import RandomChar from '../randomChar';
-import ItemList from '../itemList';
-import CharDetails from '../charDetails';
+import ErrorMessage from '../errorMessage';
+import CharacterPage from '../characterPage';
 
 
 export default class  App extends Component {
     state = {
-        showRandomChar: true
+        showRandomChar: true,
+        error: false
+    }
+
+    componentDidCatch() {
+        this.setState({error: true})
     }
 
     hideRandomChar = () => {
@@ -19,6 +24,10 @@ export default class  App extends Component {
 
     render() {
         const {showRandomChar} = this.state;
+
+        if (this.state.error) {
+            return <ErrorMessage />
+        }
 
         return (
             <> 
@@ -36,14 +45,7 @@ export default class  App extends Component {
                             </button>
                         </Col>
                     </Row>
-                    <Row>
-                        <Col md='6'>
-                            <ItemList />
-                        </Col>
-                        <Col md='6'>
-                            <CharDetails />
-                        </Col>
-                    </Row>
+                    <CharacterPage />
                 </Container>
             </>
         );
