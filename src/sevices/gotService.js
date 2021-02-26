@@ -3,7 +3,7 @@ export default class gotService {
         this._apiBase = 'https://www.anapioficeandfire.com/api';
     }
 
-    async getResource(url) {
+    getResource = async (url) => {
         const res = await fetch(`${this._apiBase}${url}`);
 
         if (!res.ok) {
@@ -13,32 +13,32 @@ export default class gotService {
         return await res.json();
     }
 
-    async getAllCharacters(id) {
+    getAllCharacters = async (id) => {
         const res = await this.getResource('/characters?page=5&pageSize=10');
         return res.map(this._transformChar);
     }
 
-    async getCharacter(id) {
+    getCharacter = async (id) => {
         const character = await this.getResource(`/characters/${id}`);
         return this._transformChar(character);
     }
 
-    async getAllHouses() {
+    getAllHouses = async () => {
         const res = await this.getResource('/houses/');
         return res.map(this._transformHouse);
     }
 
-    async getHouse(id) {
+    getHouse = async (id) => {
         const house = await this.getResource(`/houses/${id}`);
         return this._transformHouse(house);
     }
 
-    async getAllBooks() {
+    getAllBooks = async () => {
         const res = await this.getResource(`/books/`);
         return res.map(this._transformBook);
     }
 
-    async getBook(id) {
+    getBook = async (id) => {
         const book = await this.getResource(`/books/${id}`);
         return this._transformBook(book);
     }
@@ -74,7 +74,9 @@ export default class gotService {
             words: this.isSet(house.words),
             titles: this.isSet(house.titles),
             overlord: this.isSet(house.overlord),
-            ancentralWeapons: this.isSet(house.ancentralWeapons)
+            ancentralWeapons: this.isSet(house.ancentralWeapons),
+            id: this._extractId(house)
+            
         };
     }
 
@@ -83,7 +85,8 @@ export default class gotService {
             name: this.isSet(book.name),
             numberOfPages: this.isSet(book.numberOfPages),
             publiser: this.isSet(book.publiser),
-            released: this.isSet(book.released)
+            released: this.isSet(book.released),
+            id: this._extractId(book)
         };
     }
 }
