@@ -4,7 +4,7 @@
 	padding: 0;
     outline: none;
 }
-body {
+.app {
     overflow-x: hidden;
     background: url('img/got.jpeg') center center no-repeat;
     background-size: cover;
